@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public CheckpointController target;
     public TextMeshProUGUI timelbl;
     public TextMeshProUGUI laps;
+    public coinManager cm;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -41,10 +42,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("LapTrigger"))
+        if (other.CompareTag("CoinTrigger"))
         {
-            amtLaps++;
-            laps.text = "Lap: " + amtLaps;
+            Destroy(other.gameObject);
+            cm.coinCount++;
         }
     }
+
+    //    private void OnTriggerEnter(Collider other)
+    //    {
+    //        if (other.CompareTag("LapTrigger"))
+    //        {
+    //            amtLaps++;
+    //            laps.text = "Lap: " + amtLaps;
+    //        }
+    //    }
 }
