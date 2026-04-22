@@ -1,4 +1,4 @@
-using System.Security.Cryptography;
+//using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     int amtLaps = 0;
-    float desired_acceleration = 1;
+    float desired_acceleration = 0;
     float starttime;
     public float impulse;
     float steering;
@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     }
     void OnMove(InputValue action)
     {
+        
         var movement = action.Get<Vector2>();
         desired_acceleration = movement.y;
         steering = movement.x;
