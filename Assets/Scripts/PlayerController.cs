@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    int amtLaps = 0;
+    //int amtLaps = 0;
     float desired_acceleration = 0;
     float starttime;
     public float impulse;
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         //amtLaps = 0;
-        //starttime = Time.time;
+        starttime = Time.time;
         //laps.text = "Lap: " + amtLaps;
         //target = GetComponent<CheckpointController>();
     }
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // timelbl.text = string.Format("Current time: {0:F2} seconds", (Time.time - starttime));
+        timelbl.text = string.Format("Current time: {0:F2}", (Time.time - starttime));
 
         GetComponent<Rigidbody>().AddRelativeForce(desired_acceleration * impulse, 0, 0);
         transform.Rotate(0, steering * 100f * Time.deltaTime, 0);
@@ -47,14 +47,18 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             cm.coinCount++;
         }
+        //else if (other.CompareTag("CheckpointTrigger"))
+        //{
+        //    Destroy(other.gameObject);
+        //}
     }
 
     //    private void OnTriggerEnter(Collider other)
     //    {
-    //        if (other.CompareTag("LapTrigger"))
-    //        {
-    //            amtLaps++;
-    //            laps.text = "Lap: " + amtLaps;
-    //        }
+            //if (other.CompareTag("LapTrigger"))
+            //{
+            //    amtLaps++;
+            //    laps.text = "Lap: " + amtLaps;
+            //}
     //    }
 }

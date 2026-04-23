@@ -6,16 +6,16 @@ using static UnityEngine.GraphicsBuffer;
 public class CheckpointController : MonoBehaviour
 {
     //int amtLaps = 0;
-    public MeshRenderer left;
-    public MeshRenderer right;
+    public MeshRenderer flag;
+
     public CheckpointController next;
     public CheckpointController target;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        target.left.materials[0].color = Color.red;
-        target.right.materials[0].color = Color.red;
+        target.flag.materials[0].color = Color.red;
+
     }
 
     // Update is called once per frame
