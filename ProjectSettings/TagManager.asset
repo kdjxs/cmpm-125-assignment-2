@@ -6,6 +6,11 @@ TagManager:
   tags:
   - LapTrigger
   - CoinTrigger
+  - CheckpointTrigger
+  - VoidTrigger
+  - BoundObj
+  - RespawnCol
+  - Checkpoint1
   layers:
   - Default
   - TransparentFX

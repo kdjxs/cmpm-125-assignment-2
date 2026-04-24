@@ -6,32 +6,34 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    //int amtLaps = 0;
     float desired_acceleration = 0;
     float starttime;
     public float impulse;
     float steering;
-    public CheckpointController target;
     public TextMeshProUGUI timelbl;
     public TextMeshProUGUI laps;
     public coinManager cm;
+    public GameObject Player;
+    public GameObject RespawnPoint; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //amtLaps = 0;
         starttime = Time.time;
-        //laps.text = "Lap: " + amtLaps;
-        //target = GetComponent<CheckpointController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Display current time
         timelbl.text = string.Format("Current time: {0:F2}", (Time.time - starttime));
 
+        // Add force to player
         GetComponent<Rigidbody>().AddRelativeForce(desired_acceleration * impulse, 0, 0);
+        // Camera turn with A and D
         transform.Rotate(0, steering * 100f * Time.deltaTime, 0);
+
     }
+    // When the player uses W and S
     void OnMove(InputValue action)
     {
         
@@ -40,26 +42,21 @@ public class PlayerController : MonoBehaviour
         steering = movement.x;
     }
 
+    // When R button is pressed
+    void OnRestart(InputValue action)
+    {
+        Player.transform.position = RespawnPoint.transform.position;
+        GetComponent<Rigidbody>().AddRelativeForce(0, 0, 0);
+        starttime = Time.time;
+    }
+
+    // Player touches coin
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("CoinTrigger"))
         {
-            //other.gameObject.SetActive(false);
             Destroy(other.gameObject);
             cm.coinCount++;
         }
-        //else if (other.CompareTag("CheckpointTrigger"))
-        //{
-        //    Destroy(other.gameObject);
-        //}
     }
-
-    //    private void OnTriggerEnter(Collider other)
-    //    {
-            //if (other.CompareTag("LapTrigger"))
-            //{
-            //    amtLaps++;
-            //    laps.text = "Lap: " + amtLaps;
-            //}
-    //    }
 }

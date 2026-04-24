@@ -9,13 +9,14 @@ public class coinManager : MonoBehaviour
 
     void Start()
     {
+        // Initialize score
         coinCount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //coinText.text = "Score: " + coinCount.ToString();
+        // Display score
          coinText.text = string.Format("Score: {0}", (coinCount));
     }
 
