@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("CoinTrigger"))
         {
+            //other.gameObject.SetActive(false);
             Destroy(other.gameObject);
             cm.coinCount++;
         }
