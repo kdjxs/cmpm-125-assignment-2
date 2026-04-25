@@ -1,52 +1,83 @@
-using System.Security.Cryptography;
+//using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour
 {
-    int amtLaps = 0;
-    float desired_acceleration = 1;
+    float desired_acceleration = 0;
     float starttime;
     public float impulse;
-    public float turnrate;
-    public CheckpointController target;
+    float steering;
     public TextMeshProUGUI timelbl;
     public TextMeshProUGUI laps;
+    public coinManager cm;
+    public GameObject Player;
+    public GameObject RespawnPoint;
+    [SerializeField] InputActionReference resetAction;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //amtLaps = 0;
-        //starttime = Time.time;
-        //laps.text = "Lap: " + amtLaps;
-        //target = GetComponent<CheckpointController>();
+        starttime = Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // timelbl.text = string.Format("Current time: {0:F2} seconds", (Time.time - starttime));
+        // Display current time
+        timelbl.text = string.Format("Current time: {0:F2}", (Time.time - starttime));
 
+        // Add force to player
         GetComponent<Rigidbody>().AddRelativeForce(desired_acceleration * impulse, 0, 0);
-        //float dx = (Mouse.current.position.x.value - Screen.width / 2) / turnrate;
-        //if (Mathf.Abs(dx) > 0.01f)
-        //{
-        //    transform.Rotate(0, dx, 0);
-        //}
+        // Camera turn with A and D
+        transform.Rotate(0, steering * 100f * Time.deltaTime, 0);
+
     }
+    // When the player uses W and S
     void OnMove(InputValue action)
     {
+        
         var movement = action.Get<Vector2>();
         desired_acceleration = movement.y;
+        steering = movement.x;
     }
 
+    // When R button is pressed
+    void OnRestart(InputAction.CallbackContext action)
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //RespawnatCheckpoint();
+    }
+
+    public void RespawnatCheckpoint()
+    {
+        Player.transform.position = RespawnPoint.transform.position;
+        GetComponent<Rigidbody>().AddRelativeForce(0, 0, 0);
+        //starttime = Time.time;
+    }
+
+    // Player touches coin
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("LapTrigger"))
+        if (other.CompareTag("CoinTrigger"))
         {
-            amtLaps++;
-            laps.text = "Lap: " + amtLaps;
+            Destroy(other.gameObject);
+            cm.coinCount++;
         }
+    }
+
+    // R to restart
+    private void OnEnable()
+    {
+        resetAction.action.performed += OnRestart;
+        resetAction.action.Enable();
+    }
+    private void OnDisable()
+    {
+        resetAction.action.performed -= OnRestart;
+        resetAction.action.Disable();
     }
 }
