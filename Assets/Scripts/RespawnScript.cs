@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RespawnScript : MonoBehaviour
 {
-    public GameObject Player;
+    public PlayerController Player;
     public GameObject RespawnPoint;
 
     // Spawn player at respawn point
@@ -10,7 +10,9 @@ public class RespawnScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Player.transform.position = RespawnPoint.transform.position;
+            Player = other.GetComponent<PlayerController>();
+            Player.RespawnatCheckpoint();
+            //Player.transform.position = RespawnPoint.transform.position;
         }
     }
 }

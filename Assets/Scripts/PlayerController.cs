@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour
@@ -14,7 +15,9 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI laps;
     public coinManager cm;
     public GameObject Player;
-    public GameObject RespawnPoint; 
+    public GameObject RespawnPoint;
+    [SerializeField] InputActionReference resetAction;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,11 +46,17 @@ public class PlayerController : MonoBehaviour
     }
 
     // When R button is pressed
-    void OnRestart(InputValue action)
+    void OnRestart(InputAction.CallbackContext action)
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //RespawnatCheckpoint();
+    }
+
+    public void RespawnatCheckpoint()
     {
         Player.transform.position = RespawnPoint.transform.position;
         GetComponent<Rigidbody>().AddRelativeForce(0, 0, 0);
-        starttime = Time.time;
+        //starttime = Time.time;
     }
 
     // Player touches coin
@@ -58,5 +67,17 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
             cm.coinCount++;
         }
+    }
+
+    // R to restart
+    private void OnEnable()
+    {
+        resetAction.action.performed += OnRestart;
+        resetAction.action.Enable();
+    }
+    private void OnDisable()
+    {
+        resetAction.action.performed -= OnRestart;
+        resetAction.action.Disable();
     }
 }
